@@ -1,55 +1,108 @@
-# 롱폼 채널 스킬 공유본
+# 롱폼클로너 — 채널 도입부터 반복 제작까지
 
-2026-10-08 프로젝트 원본에서 추출한 Codex 스킬 5종입니다. 제작 지침·Python/셸 코드·참조 문서·Remotion 템플릿은 수정하지 않았습니다.
+채널 분석·3분 테스트를 한 뒤 제작 방식을 독립 MD로 저장하고, 별도 `~형 제작` 프로젝트에서 주제·썸네일·본편·피드백·관련 쇼츠까지 이어가는 Codex 스킬 패키지입니다. 스포츠몽땅형 실제 운영 흐름을 반영했습니다.
 
-## 다운로드와 설치
+**실행 순서:** 채널 URL → 제목 분석·테스트 주제 승인 → 최신 적격 영상 1편 분석 → 3분 테스트·피드백 → 제작 MD → 별도 채널 프로젝트 → 주제 3개·선택 → 썸네일·제목 3개 → 설명글·대본·TTS·편집·본편 → 피드백 → 같은 핵심 주제 쇼츠 3편.
 
-이 저장소의 `longform-channel-skills.zip`을 다운로드하고 압축을 풉니다. 압축 안에는 아래 스킬 폴더 5개와 프로젝트 `AGENTS.md`, 설치 스크립트, 파일 해시가 있습니다.
+## 1. 다운로드와 설치
 
-- longform-channel-cloner: 전체 절차
-- longform-channel-analysis: 레퍼런스 분석
-- longform-channel-planning: 주제와 대본
-- longform-channel-production: 음성·자료·편집·렌더
-- longform-channel-review: 사용자 피드백 수정
-
-터미널에서 압축을 푼 `longform-channel-skills` 폴더로 이동한 뒤 실행합니다.
+이 저장소의 `longform-channel-skills.zip`을 다운로드하고 압축을 풉니다. 압축 안 `longform-channel-skills` 폴더에서 터미널을 엽니다. SHA256은 함께 제공된 `.sha256`과 비교할 수 있습니다.
 
 ```bash
-bash install-skills.sh
+python3 lfc.py install
 ```
 
-현재 배포 대상의 설치 위치는 `${CODEX_HOME:-$HOME/.codex}/skills`입니다. 기존 동명 스킬이 있으면 덮어쓰지 않고 멈춥니다. 설치 후 Codex의 새 채팅에서 `longform-channel-cloner` 스킬이 보이는지 확인하세요. 보이지 않으면 앱을 다시 시작하고 설치 경로를 확인하세요. 프로젝트 공통 지시도 유지하려면 이 압축 해제 폴더를 작업 프로젝트로 여세요.
+8개 스킬을 `~/.codex/skills`에 설치합니다. 기존 스킬과 내용이 다르면 덮어쓰지 않고 중단합니다. 기존 폴더를 별도로 백업·비교하거나 아래처럼 프로젝트 로컬 스킬을 사용하세요. 설치 후 새 Codex 채팅에서 시작하세요. 기존 채팅이 자동으로 기준을 다시 읽었다고 가정하지 않습니다.
 
-## 실행 환경
+모델은 Codex에서 **gpt-6.1-sol / high**로 지정합니다. 이 설치 명령은 앱의 모델을 바꾸지 않습니다.
 
-기존 자동 환경 설정은 Apple Silicon 맥 기준입니다. Intel 맥은 ffmpeg와 Python 환경을 별도로 준비해야 합니다. 원본 설치 스크립트에는 Python 3.11 이상으로 표기되어 있지만 일부 코드가 Python 3.12 이상의 문법을 사용하므로 Python 3.12 이상을 준비하세요. Node.js는 22 이상이 필요합니다.
+## 2. 맥 제작 환경
+
+제작 코드는 Python **3.12 이상**, Node **22 이상**, ffmpeg/ffprobe가 필요합니다. `lfc.py`의 폴더 관리만 성공한 것은 영상 제작 환경 준비 완료가 아닙니다.
+
+Apple Silicon 맥에서 Python과 Node를 먼저 설치한 다음:
 
 ```bash
-bash longform-channel-cloner/scripts/setup_env.sh
-bash longform-channel-cloner/scripts/fetch_fonts.sh
-npm ci --prefix longform-channel-cloner/assets/remotion-template
+bash skills/longform-channel-cloner/scripts/setup_env.sh
+bash skills/longform-channel-cloner/scripts/fetch_fonts.sh
+"$HOME/.longform-cloner/venv/bin/python" lfc.py doctor
 ```
 
-위 명령은 프로그램·폰트·패키지를 다운로드합니다. 라이브러리 버전은 원본에 고정된 값을 유지했으며, 새 맥에서 전체 설치와 렌더를 재검증한 배포본은 아닙니다.
+Intel 맥은 ffmpeg/ffprobe·Python 3.12+·Node 22+를 직접 준비하고 `~/.longform-cloner/venv`에 가상환경을 만든 후 `skills/longform-channel-cloner/scripts/requirements.txt`를 설치하세요. `setup_env.sh`는 ARM 전용입니다. 의존성 버전은 원본 스킬 기준이며 새 컴퓨터의 설치 성공까지 검증된 것은 아닙니다.
 
-기본 Typecast 음성 합성에는 본인의 `TYPECAST_API_KEY`가 필요합니다. 선택한 자료 서비스에 따라 `PEXELS_API_KEY`, `PIXABAY_API_KEY` 등도 설정합니다. 원본 스크립트는 환경변수 또는 사용자 홈의 `~/.longform-cloner/secrets.env`를 읽습니다. 키는 GitHub에 올리지 마세요.
+TTS 공급자의 API 키, 원본 자료, 음원, 폰트는 각자 준비합니다. 키는 환경변수 또는 `~/.longform-cloner/secrets.env`에 저장하고 Git에 넣지 마세요. 실제 키 이름과 형식은 `tts.py --help` 및 해당 공급자 구현을 확인합니다. 음원 설정의 `local_path`는 미연결 상태입니다. 채널이 지정한 음원을 확보하고 실제 경로·해시로 연결하세요. 범용 Remotion 프로젝트는 해당 템플릿 폴더에서 `npm ci` 후 사용합니다.
 
-`assets/fixed-bgm.json`에는 원본 컴퓨터의 절대경로가 보존돼 있습니다. 해당 BGM 파일은 이 묶음에 없습니다. 수신자 컴퓨터에서 문서에 지정된 음원을 준비한 후 설치된 사본의 경로를 실제 파일 위치로 맞춰야 합니다. 외부 영상·음원·폰트의 이용 조건은 해당 출처에서 확인하세요.
+## 3. 롱폼클로너 프로젝트 만들기
 
-스킬의 지정 모델은 `gpt-6.1-sol`, 추론 수준은 `high`입니다. 파일 설치만으로 앱 모델 설정이 변경되지는 않습니다. 수신자가 사용 가능한 모델과 설정을 직접 확인해야 합니다.
+```bash
+python3 lfc.py cloner --dest "$HOME/lfc_projects/롱폼클로너"
+```
 
-## 사용 예시
+생성된 폴더를 Codex의 프로젝트로 추가하고 이름을 **롱폼클로너**로 지정합니다. 이 명령은 기존 앱 프로젝트 이름을 변경하지 않습니다. 새 채팅에서:
 
-Codex에서 다음과 같이 요청하세요.
+> AGENTS.md를 읽고 $longform-channel-workflow로 이 채널의 3분 테스트부터 만들어줘: [채널 URL]
 
-> longform-channel-cloner 스킬로 이 유튜브 채널을 분석하고 3분 테스트를 만들어 줘: 채널 URL
+제목·메타데이터 분석 후 5분 안에 주제를 제시하고 사용자 승인을 받습니다. 승인 뒤 최신 적격 원본 1편의 화면·대본을 분석하고 170~210초 테스트까지 이어갑니다. 전체 3600초 기준은 승인 대기도 포함합니다. 초과 시 시간을 숨기거나 자동 중단하지 않습니다.
 
-제목 기반 테스트 주제를 먼저 제안하고, 사용자 승인 뒤 정밀 분석과 제작을 진행하도록 되어 있습니다.
+테스트 스타일 확정 뒤:
 
-## 공유 범위와 검증
+> 지금 확정한 제작 방식을 독립 제작 MD로 만들어줘. 화면·대본 분석과 승인 근거를 함께 인계하고, 클로너 밖에 [채널명]형 제작 프로젝트를 생성해줘.
 
-인증정보·쿠키·개인 작업 로그·과거 리뷰 스냅샷·다운로드 영상·렌더 결과·캐시·가상환경·node_modules는 포함하지 않았습니다. 별별역사 등 채널 전용 스킬도 이 묶음의 범위가 아닙니다.
+에이전트는 `skills/longform-channel-workflow/references/handoff.md`에 따라 실제 분석값을 채운 `handoff/`를 만들고 다음 명령을 실행합니다. 빈 템플릿과 가짜 승인 기록은 사용하지 않습니다.
 
-`SOURCE_SHA256SUMS`는 원본 파일 129개의 해시이며, `SHA256SUMS`는 설치 안내와 설치 스크립트를 포함한 압축 내 파일의 해시입니다. 원본과 사본의 바이트 일치, Python 문법, 스킬 형식을 확인했습니다. 원본 프로젝트와 현재 설치된 스킬은 변경하지 않았습니다.
+```bash
+python3 lfc.py channel --name 새채널형 \
+  --handoff /실제/인계폴더 \
+  --cloner-project "$HOME/lfc_projects/롱폼클로너" \
+  --dest "$HOME/lfc_projects/새채널형"
+```
 
-비공개 저장소이므로 받는 사람의 GitHub 계정을 저장소 협업자로 초대해야 링크로 접근할 수 있습니다.
+클로너와 채널 폴더는 형제 위치에 둡니다. 기존 목적지는 보존합니다. 새 채널의 길이·성우·편집·음악은 해당 제작 MD가 정합니다.
+
+## 4. 스포츠몽땅형 바로 시작
+
+스포츠몽땅형 스타일을 명시적으로 선택하는 경우에는 제작 MD와 롱폼·쇼츠 기준이 포함되어 있습니다.
+
+```bash
+python3 lfc.py channel --name 스포츠몽땅형 \
+  --profile sportsmongttang \
+  --dest "$HOME/lfc_projects/스포츠몽땅형"
+```
+
+이미 같은 폴더가 있으면 새 목적지를 지정하세요. 이 폴더를 별도 Codex 프로젝트로 추가하고 다음과 같이 진행합니다.
+
+1. `AGENTS.md와 제작규칙.md 읽고 주제줘.`
+2. `2번 주제로 썸네일·제목 3개와 10~20분 전체 본편 제작해줘.`
+3. 전달된 본편의 피드백을 말합니다. 확정한 수정값은 채널 MD와 승인 기준에 저장합니다.
+4. `같은 핵심 주제로 쇼츠 3개 만들어줘. 시작점·대본·자료는 달리하고 쇼츠 기준을 적용해줘.`
+
+매번 채널을 다시 분석하거나 3분 테스트를 반복하지 않습니다. 다른 채널에 스포츠몽땅의 수치를 자동 적용하지 않습니다. 과거 라우다 영상·원본 자산·완성 렌더 코드는 포함되지 않습니다. 동봉한 기준과 범용 코드로 새 영상을 구현합니다.
+
+## 5. 결과물과 재개
+
+```bash
+python3 lfc.py video --project "$HOME/lfc_projects/스포츠몽땅형" \
+  --keyword 니키_라우다 --title "불타는 차에서 돌아온 챔피언"
+```
+
+이 명령은 새 본편의 작업 폴더와 결과물 폴더를 준비합니다. 영상·썸네일을 자동 생성하는 명령은 아닙니다. 실제 제작은 Codex가 스킬과 채널 MD를 읽고 진행합니다.
+
+```text
+결과물/YYYYMMDD_키워드/
+  01_썸네일/         # 제목 그대로 파일명, 제목과 짝인 3개
+  02_설명글/         # 첫 줄 해시태그 10~12개, 다음 줄부터 본문
+  03_영상완성본/
+  04_쇼츠/           # 같은 핵심 주제 3개
+work/날짜_키워드-고유ID/작업상태.md
+```
+
+채팅 제목은 본편 시작일 기준 `MM/DD_영상제목`입니다. 수정은 기존 작업을 이어갑니다. 실패 로그와 유효한 결과를 보존합니다. 전달·사용자 승인·유튜브 게시를 구분하며 게시 권한은 별도 요청을 따릅니다.
+
+## 포함 범위와 검증
+
+- 운영 연결 스킬 1개, 원본 클로너·단계 스킬 5개, 스포츠몽땅 롱폼·쇼츠 스킬 2개.
+- 채널 제작 MD 템플릿, 인계 규격, 프로젝트 생성·설치·환경 확인 명령.
+- 공통 TTS·묵음 처리·편집 코드와 Remotion 템플릿. 외부 미디어·API 키·쿠키·대화 전체 기록은 제외.
+- 스킬 형식, Python 문법, 설치 충돌·프로젝트 분리·인계·출력 폴더 동작을 검증합니다. 실제 유료 TTS 호출이나 새 영상 렌더는 이 패키지 검증에 포함하지 않습니다.
+
+`변경내역.md`에 공유본에서 바뀐 파일과 검증 범위를 기록했습니다. GitHub 저장소가 비공개이면 링크 수신자에게도 GitHub 접근 권한이 필요합니다.
