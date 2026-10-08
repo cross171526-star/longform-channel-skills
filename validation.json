@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-08",
+  "skills": [
+    {
+      "skill": "byeolbyeol-longform",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "docustory-844-longform",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-analysis",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-cloner",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-planning",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-production",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-review",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-channel-workflow",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-companion-shorts",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "longform-project-handoff",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "read-y-ai-longform",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "sportsmongttang-longform",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "sportsmongttang-shorts",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "video-output-cleanup",
+      "passed": true,
+      "output": "Skill is valid!"
+    },
+    {
+      "skill": "watch",
+      "passed": true,
+      "output": "Skill is valid!"
+    }
+  ],
+  "python_count": 114,
+  "python_errors": [],
+  "workflow_tests": {
+    "passed": 5
+  },
+  "grb_v7": {
+    "passed": true,
+    "exact_frames": 42
+  },
+  "not_tested": [
+    "새 컴퓨터 전체 설치",
+    "유료 TTS 인증·합성",
+    "새 본편 전체 렌더"
+  ],
+  "secret_and_personal_path_findings": [],
+  "byeolbyeol_v3": {
+    "passed": true,
+    "templates": 9,
+    "fixed_assets": 43
+  }
+}

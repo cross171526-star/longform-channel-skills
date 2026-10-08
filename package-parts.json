@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-08",
+  "archives": [
+    {
+      "file": "longform-channel-skills.zip",
+      "sha256": "a5173c539c47cc1add035ece83d430c4238a3292ef0096bed6fda2ca6cf13f45",
+      "files": 266
+    },
+    {
+      "file": "longform-assets-01.zip",
+      "sha256": "0602dffeffc8b1e34a093bd97ebb5957564056cec0b3b3e6614e5a8dc354c07e",
+      "files": 38
+    },
+    {
+      "file": "longform-assets-02.zip",
+      "sha256": "159a9ec8bc31f1b26938c97ade65e47064cecdbb93d1f17e03b98eadd476edac",
+      "files": 19
+    },
+    {
+      "file": "longform-assets-03.zip",
+      "sha256": "49259e7c8d3c914a7697e3fa694d520985412ada924ba1b32f1b09a9b9b7a413",
+      "files": 17
+    },
+    {
+      "file": "longform-assets-04.zip",
+      "sha256": "cca25f0c052a21790225b5481b866f3fcfd92c7e68b8992365d525a45b97fb6c",
+      "files": 19
+    },
+    {
+      "file": "longform-assets-05.zip",
+      "sha256": "f0e444d33ed28413c13fb9bd4861929c30f0883cb69b5d538ceecb29c03aae52",
+      "files": 42
+    },
+    {
+      "file": "longform-assets-06.zip",
+      "sha256": "807b2e19fd8a786043fc83350f6a23905101cd399cf8bd1b45001e3654ed48eb",
+      "files": 15
+    }
+  ],
+  "package": "longform-channel-skills"
+}
